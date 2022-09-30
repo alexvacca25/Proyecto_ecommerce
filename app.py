@@ -1,4 +1,4 @@
-from crypt import methods
+
 from datetime import date, datetime
 from flask import Flask, render_template, url_for, request, redirect,flash
 import controlador
@@ -29,7 +29,8 @@ def validar_login():
             flash('Error en Consulta')
             return redirect(url_for('login'))
         else:
-            if resultado[0]['verificado']==1:
+            print('VERIFICADO: ' + str(resultado[0]['verificado']))
+            if resultado[0]['verificado']=='Y':
                 if check_password_hash(resultado[0]['passwd'],passw):
                     return redirect(url_for('menu'))
                 else:
