@@ -57,6 +57,11 @@ def login():
 def registro():
     return render_template('registro.html')
 
+@app.route('/validar')
+def validar():
+    return render_template('validar.html')
+
+
 @app.route('/menu')
 def menu():
     return render_template('menu.html')

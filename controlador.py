@@ -1,4 +1,8 @@
+from dataclasses import replace
+from datetime import datetime
 import sqlite3
+
+from flask import flash
 import enviaremail
 
 DB_NAME='bdecommerce.s3db'
@@ -8,13 +12,19 @@ def conexion():
     return conn
 
 def adicionar_registros(nombre,apellido,usuario,p1):
+    cod_ver=str(datetime.now())
+    cod_ver=cod_ver.replace("-","")
+    cod_ver=cod_ver.replace(" ","")
+    cod_ver=cod_ver.replace(":","")
+    cod_ver=cod_ver.replace(".","")
+    flash(cod_ver)
     try:
         db=conexion()
         cursor=db.cursor()
         sql='INSERT INTO usuario(nombre,apellido,usuario,passwd,cod_verificacion,verificado,id_rol) VALUES(?,?,?,?,?,?,?)'
-        cursor.execute(sql,[nombre,apellido,usuario,p1,'V-10001',False,1])
+        cursor.execute(sql,[nombre,apellido,usuario,p1,cod_ver,0,1])
         db.commit()
-        enviaremail.enviar_email(usuario,'MT-55555')
+        enviaremail.enviar_email(usuario,cod_ver)
         return True
     except:
         return False
