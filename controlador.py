@@ -54,4 +54,13 @@ def validacion_login(usu):
         return False   
 
 
-      
+def activar_cuenta(usu,codver):
+    try:
+        db=conexion()
+        cursor=db.cursor()
+        sql='UPDATE usuario SET verificado=1 WHERE usuario=? AND cod_verificacion=?'
+        cursor.execute(sql,[usu,codver])
+        db.commit()
+        return True      
+    except:
+        return False

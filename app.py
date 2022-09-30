@@ -1,4 +1,5 @@
 
+
 from datetime import date, datetime
 from flask import Flask, render_template, url_for, request, redirect,flash
 import controlador
@@ -13,6 +14,20 @@ app.secret_key='Mi clave Secreta'+str(datetime.now)
 @app.route('/prueba')
 def prueba():
     return True
+
+
+@app.route('/activarcuenta', methods=['POST'])
+def activar_cuenta():
+    datos=request.form
+    usu=datos['usuario']
+    codver=datos['codverificacion']
+    resultado=controlador.activar_cuenta(usu,codver)
+    if resultado:
+        flash('Cuenta Activada Satisfactoriamente')
+    else:
+        flash('Error en Activacion')
+    return redirect(url_for('validar'))        
+
 
 
 @app.route('/validarlogin', methods=['POST'])
@@ -30,7 +45,7 @@ def validar_login():
             return redirect(url_for('login'))
         else:
             print('VERIFICADO: ' + str(resultado[0]['verificado']))
-            if resultado[0]['verificado']=='Y':
+            if resultado[0]['verificado']==1:
                 if check_password_hash(resultado[0]['passwd'],passw):
                     return redirect(url_for('menu'))
                 else:
