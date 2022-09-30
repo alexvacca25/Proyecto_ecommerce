@@ -29,4 +29,29 @@ def adicionar_registros(nombre,apellido,usuario,p1):
     except:
         return False
 
+def validacion_login(usu):
+    
+    try:
+        db=conexion()
+        cursor=db.cursor()
+        sql='SELECT * FROM usuario WHERE usuario=?'
+        cursor.execute(sql,[usu])
+        resultado=cursor.fetchone()
+        datos=[
+            {
+                'id':resultado[0],
+                'nombre':resultado[1],
+                'apellido':resultado[2],
+                'usuario':resultado[3],
+                'passwd':resultado[4],
+                'codverificacion':resultado[5],
+                'verificado':resultado[6],
+                'rol':resultado[7]
+            }
+                ]
+        return datos
+    except:
+        return False   
+
+
       

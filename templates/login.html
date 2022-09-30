@@ -19,7 +19,7 @@
                       <h1 class="h4 text-gray-900 mb-4">Bienvenido</h1>
                     </div>
                     <!--Formulario de Login-->
-                    <form class="user" action="/menu" method="GET">
+                    <form class="user" action="/menu" method="POST">
                       <div class="form-group mb-3">
                         <input type="email" class="form-control form-control-user" name="usuario" aria-describedby="emailHelp" placeholder="Ingrese el Usuario">
                       </div>
@@ -58,6 +58,28 @@
                       <a class="btn btn-outline-primary" href="{{url_for('registro')}}">Registrar Usuario</a>
                     </div>
                    
+                    <hr>
+
+            
+
+                    {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                    {% for message in messages %}
+            
+                    <div class="alert alert-dismissible alert-warning">
+                      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                      <h4 class="alert-heading">Ingreso al Sistema</h4>
+                      <p class="mb-0">
+                        {{ message }}
+                      </p>
+                    </div>
+                   
+              
+                    {% endfor %}
+                    {% endif %}
+                    {% endwith %}     
+
+
                   </div>
                 </div>
               </div>

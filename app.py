@@ -1,3 +1,4 @@
+from crypt import methods
 from datetime import date, datetime
 from flask import Flask, render_template, url_for, request, redirect,flash
 import controlador
@@ -12,6 +13,32 @@ app.secret_key='Mi clave Secreta'+str(datetime.now)
 @app.route('/prueba')
 def prueba():
     return True
+
+
+@app.route('/validarlogin', methods=['POST'])
+def validar_login():
+    datos=request.form
+    usu=datos['usuario']
+    passw=datos['passw']
+    if usu=='' or passw=='':
+        flash('Datos Incompletos')
+        return redirect(url_for('login'))
+    else:
+        resultado=controlador.validacion_login(usu)
+        if resultado==False:
+            flash('Error en Consulta')
+            return redirect(url_for('login'))
+        else:
+            if resultado[0]['verificado']==1:
+                if check_password_hash(resultado[0]['passwd'],passw):
+                    return redirect(url_for('menu'))
+                else:
+                    flash('Contraseña Incorrecta')
+                    return redirect(url_for('login'))
+            else:
+                return redirect(url_for('validar'))                    
+
+
 
 
 @app.route('/addregistro', methods=['POST'])
