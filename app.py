@@ -49,7 +49,9 @@ def validar_login():
                 if check_password_hash(resultado[0]['passwd'],passw):
                     session['username']=usu
                     session['nombre']=resultado[0]['nombre']+" "+resultado[0]['apellido']
-                    return redirect(url_for('mensajeria'))
+                    listaruser=controlador.listar_usuario(usu)
+                    print(listaruser)
+                    return render_template('mensajeria.html', datauser=listaruser)
                 else:
                     flash('Contraseña Incorrecta')
                     return redirect(url_for('login'))

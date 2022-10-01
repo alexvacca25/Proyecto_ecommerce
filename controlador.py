@@ -67,7 +67,6 @@ def activar_cuenta(usu,codver):
 
 
 def listar_usuario(usu):
-    
     try:
         db=conexion()
         cursor=db.cursor()
@@ -83,7 +82,7 @@ def listar_usuario(usu):
                     'usuario':u[3],
                     'rol':u[7]
                 }
-        usuarios.append(registro)        
+            usuarios.append(registro)        
                     
         return usuarios
     except:
