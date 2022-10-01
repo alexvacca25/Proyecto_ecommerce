@@ -17,12 +17,12 @@ def adicionar_registros(nombre,apellido,usuario,p1):
     cod_ver=cod_ver.replace(" ","")
     cod_ver=cod_ver.replace(":","")
     cod_ver=cod_ver.replace(".","")
-    flash(cod_ver)
+    #flash(cod_ver)
     try:
         db=conexion()
         cursor=db.cursor()
         sql='INSERT INTO usuario(nombre,apellido,usuario,passwd,cod_verificacion,verificado,id_rol) VALUES(?,?,?,?,?,?,?)'
-        cursor.execute(sql,[nombre,apellido,usuario,p1,cod_ver,0,1])
+        cursor.execute(sql,[nombre,apellido,usuario,p1,cod_ver,1,1])
         db.commit()
         enviaremail.enviar_email(usuario,cod_ver)
         return True
@@ -64,3 +64,27 @@ def activar_cuenta(usu,codver):
         return True      
     except:
         return False
+
+
+def listar_usuario(usu):
+    
+    try:
+        db=conexion()
+        cursor=db.cursor()
+        sql='SELECT * FROM usuario WHERE usuario<>?'
+        cursor.execute(sql,[usu])
+        resultado=cursor.fetchall()
+        usuarios=[]
+        for u in resultado:
+            registro={
+                    'id':u[0],
+                    'nombre':u[1],
+                    'apellido':u[2],
+                    'usuario':u[3],
+                    'rol':u[7]
+                }
+        usuarios.append(registro)        
+                    
+        return usuarios
+    except:
+        return False   

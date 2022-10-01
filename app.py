@@ -1,7 +1,7 @@
 
 
 from datetime import date, datetime
-from flask import Flask, render_template, url_for, request, redirect,flash
+from flask import Flask, render_template, url_for, request, redirect,flash,session
 import controlador
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -47,7 +47,9 @@ def validar_login():
             print('VERIFICADO: ' + str(resultado[0]['verificado']))
             if resultado[0]['verificado']==1:
                 if check_password_hash(resultado[0]['passwd'],passw):
-                    return redirect(url_for('menu'))
+                    session['username']=usu
+                    session['nombre']=resultado[0]['nombre']+" "+resultado[0]['apellido']
+                    return redirect(url_for('mensajeria'))
                 else:
                     flash('Contraseña Incorrecta')
                     return redirect(url_for('login'))
@@ -103,6 +105,10 @@ def registro():
 @app.route('/validar')
 def validar():
     return render_template('validar.html')
+
+@app.route('/mensajeria')
+def mensajeria():
+    return render_template('mensajeria.html')
 
 
 @app.route('/menu')
