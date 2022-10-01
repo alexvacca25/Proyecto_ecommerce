@@ -1,5 +1,3 @@
-
-
 from datetime import date, datetime
 from flask import Flask, render_template, url_for, request, redirect,flash,session
 import controlador
@@ -15,6 +13,20 @@ app.secret_key='Mi clave Secreta'+str(datetime.now)
 def prueba():
     return True
 
+
+@app.route('/enviarmensaje', methods=['POST'])
+def enviar_mensaje():
+    datos=request.form
+    rem=session['username']
+    dest=datos['destinatario']
+    asu=datos['asunto']
+    mens=datos['cuerpo']
+    resultado=controlador.adicionar_mensajes(rem,dest,asu,mens)
+    if resultado:
+        flash('Mensaje Enviar Exitosamente...')
+    else:
+        flash('Error Enviando Mensaje...')
+    return redirect(url_for('mensajeria'))        
 
 @app.route('/activarcuenta', methods=['POST'])
 def activar_cuenta():

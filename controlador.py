@@ -87,3 +87,15 @@ def listar_usuario(usu):
         return usuarios
     except:
         return False   
+
+
+def adicionar_mensajes(rem,dest,asunto,cuerpo):
+    try:
+        db=conexion()
+        cursor=db.cursor()
+        sql='INSERT INTO mensajeria(remitente,destinatario,asunto,mensaje) VALUES(?,?,?,?)'
+        cursor.execute(sql,[rem,dest,asunto,cuerpo])
+        db.commit()
+        return True
+    except:
+        return False

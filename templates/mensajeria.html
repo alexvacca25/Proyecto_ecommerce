@@ -16,7 +16,7 @@
                             <div class="text-center">
                                 <h1 class="h4 text-gray-900 mb-4">Mensajeria Interna Mision TIC - Central MAIL</h1>
                             </div>
-                            <form class="user" action="/usuarios" method="POST">
+                            <form class="user" action="/enviarmensaje" method="POST">
                                 <div class="form-group row">
                                     <div class="col-sm-12 mb-3 mb-sm-0">
                                         <input type="text" class="form-control form-control-user mb-3" id="nombre1"
@@ -27,7 +27,7 @@
                                 <div class="form-group row">
                                     
                                     <div class="col-sm-12 mb-6 mb-sm-0">
-                                        <select class="form-select mb-3" aria-label="Default select example" id="destinatario">
+                                        <select class="form-select mb-3" aria-label="Default select example" id="destinatario" name="destinatario">
                                             <option value="seleccione" selected>Seleccione</option>
                                          {% for user in datauser %}
                                             <option value="{{user['usuario']}}">{{ user['nombre'].upper() }} {{ user['apellido'].upper() }}</option>
@@ -45,7 +45,7 @@
 
 
                                 <div class="d-flex gap-2">
-                                    <button id="boton-accion" class="btn btn-secondary mb-3" type="button">Enviar Mensaje</button>
+                                    <button id="boton-accion" class="btn btn-secondary mb-3" type="submit">Enviar Mensaje</button>
                                </div>
 
                                {% with messages = get_flashed_messages() %}
