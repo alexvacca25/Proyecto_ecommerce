@@ -1,5 +1,6 @@
+
 from datetime import date, datetime
-from flask import Flask, render_template, url_for, request, redirect,flash,session
+from flask import Flask, jsonify, render_template, url_for, request, redirect,flash,session
 import controlador
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -13,6 +14,18 @@ app.secret_key='Mi clave Secreta'+str(datetime.now)
 def prueba():
     return True
 
+@app.route('/consultamensajes')
+def consulta_mensajes():
+    usu='alexillo@gmail.com'
+    resultado=controlador.listar_mensajes(usu)
+    return jsonify(resultado)
+
+@app.route('/consultamensajesind',methods=['POST'])
+def consulta_mensajes_ind():
+    datos=request.get_json()
+    usu=datos['username']
+    resultado=controlador.listar_mensajes(usu)
+    return jsonify(resultado)
 
 @app.route('/enviarmensaje', methods=['POST'])
 def enviar_mensaje():
@@ -26,7 +39,10 @@ def enviar_mensaje():
         flash('Mensaje Enviar Exitosamente...')
     else:
         flash('Error Enviando Mensaje...')
-    return redirect(url_for('mensajeria'))        
+
+    listaruser=controlador.listar_usuario(rem)
+    return render_template('mensajeria.html', datauser=listaruser)    
+
 
 @app.route('/activarcuenta', methods=['POST'])
 def activar_cuenta():

@@ -99,3 +99,26 @@ def adicionar_mensajes(rem,dest,asunto,cuerpo):
         return True
     except:
         return False
+
+def listar_mensajes(usu):
+    try:
+        db=conexion()
+        cursor=db.cursor()
+        sql='SELECT * FROM mensajeria WHERE remitente=? OR destinatario=?'
+        cursor.execute(sql,[usu,usu])
+        resultado=cursor.fetchall()
+        usuarios=[]
+        for u in resultado:
+            registro={
+                    'id':u[0],
+                    'remitente':u[1],
+                    'destinatario':u[2],
+                    'asunto':u[3],
+                    'mensaje':u[4],
+                    'fecha':u[5]
+                }
+            usuarios.append(registro)        
+                    
+        return usuarios
+    except:
+        return False   
