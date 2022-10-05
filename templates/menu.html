@@ -29,10 +29,20 @@
         <hr>
         <div class="usuario">
             <img src="https://picsum.photos/id/1005/367/267" alt="">
-            {{ session['nombre'] }}
-            {{ session['username'] }}
+            <p>{{ session['nombre'] }}</p>
+            <p id="login_usuario">{{ session['username'] }}</p>
         </div>
         <hr>
+
+        <div class="d-grid gap-2">
+            <a href="#" class="boton seleccionado"><i class="bi bi-house"></i>Perfil</a>
+            <a onclick="verdatos();" href="{{url_for('menu_user')}}" class="boton"><i class="bi bi-person"></i>Cambiar Contraseña</a>
+            
+            <!-- <a href="profesores.html" class="boton"><i class="bi bi-person-workspace"></i>Profesores</a>
+            <a href="estudiantes.html" class="boton"><i class="bi bi-person-check"></i>Estudiantes</a>
+            <a href="materias.html" class="boton"><i class="bi bi-list-task"></i>Materias</a>
+            <a href="cursos.html" class="boton"><i class="bi bi-list-task"></i>Curso</a> -->
+        </div>
 
         <div class="d-grid gap-2">
             <a href="#" class="boton seleccionado"><i class="bi bi-house"></i>Administrador</a>

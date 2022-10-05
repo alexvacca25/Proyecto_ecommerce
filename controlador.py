@@ -1,6 +1,7 @@
 from dataclasses import replace
 from datetime import datetime
 import sqlite3
+from unittest import result
 
 from flask import flash
 import enviaremail
@@ -100,25 +101,61 @@ def adicionar_mensajes(rem,dest,asunto,cuerpo):
     except:
         return False
 
-def listar_mensajes(usu):
+def listar_mensajes(tipo,usu):
     try:
         db=conexion()
         cursor=db.cursor()
-        sql='SELECT * FROM mensajeria WHERE remitente=? OR destinatario=?'
-        cursor.execute(sql,[usu,usu])
+        if tipo==1:
+            sql='SELECT * FROM mensajeria ORDER BY fecha DESC'
+            cursor.execute(sql)
+        else:  
+            sql='SELECT * FROM mensajeria WHERE remitente=? OR destinatario=? ORDER BY fecha DESC'
+            cursor.execute(sql,[usu,usu])
         resultado=cursor.fetchall()
         usuarios=[]
         for u in resultado:
+            mensaje='Mensaje Recibido'
+            if u[1]==usu:
+                mensaje='Mensaje Enviado'
             registro={
                     'id':u[0],
                     'remitente':u[1],
                     'destinatario':u[2],
                     'asunto':u[3],
                     'mensaje':u[4],
-                    'fecha':u[5]
+                    'fecha':u[5],
+                    'tipo':mensaje
                 }
             usuarios.append(registro)        
                     
         return usuarios
     except:
         return False   
+
+    
+def recupera_cuenta(usu):
+    try:
+        db=conexion()
+        cursor=db.cursor()
+        sql='SELECT *FROM usuario WHERE usuario=?'
+        cursor.execute(sql,[usu])
+        resultado=cursor.fetchone()
+
+        if resultado!=None:
+            return 'SI'
+        else:
+            return 'NO'
+    except:
+        return False
+
+def restablecer_cuenta(usu,p1):
+    
+    try:
+        db=conexion()
+        cursor=db.cursor()
+        sql='UPDATE usuario SET passwd=? WHERE usuario=?'
+        cursor.execute(sql,[p1,usu])
+        db.commit()
+        return True
+    except:
+        return False

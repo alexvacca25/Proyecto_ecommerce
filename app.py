@@ -14,6 +14,55 @@ app.secret_key='Mi clave Secreta'+str(datetime.now)
 def prueba():
     return True
 
+@app.route('/cambiarclave',methods=['POST'])
+def restablece_cuenta():
+    datos=request.form
+    usu=datos['username']
+    p1=datos['p1']
+    p2=datos['p2']
+    p1enc=generate_password_hash(p1)
+    if p1==p2:
+        resultado=controlador.restablecer_cuenta(usu,p1enc)
+        if resultado:
+            flash('Contraseña Actualizada Correctamente')
+        else:
+            flash('No se puedo realizar la Actualizacion')    
+    else:
+        flash('Contraseñas no Coinciden')    
+    
+    return redirect(url_for('restablecer')) 
+
+
+@app.route('/recuperarcuenta',methods=['POST'])
+def recuperar_cuenta():
+    datos=request.form
+    usu=datos['username']
+    resultado=controlador.recupera_cuenta(usu)
+    if resultado=='SI':
+        flash('Usuario Encontrado: Mensaje enviado al correo')
+    elif resultado=='NO':
+        flash('Usuario NO Existe en la base de datos')    
+    else:
+        flash('No se Puedo Ejecutar la consulta, Intente mas Tarde')
+    return redirect(url_for('recuperar'))        
+
+
+@app.route('/consultarmail',methods=['GET','POST'])
+def consulta_mail():
+    if request.method=='POST':
+        datos=request.get_json()
+        usu=datos['username']
+        tipo=datos['tipo']
+        if tipo==1:
+            resultado=controlador.listar_mensajes(1,'')
+        else:
+            resultado=controlador.listar_mensajes(2,usu)    
+  
+    else:
+       resultado=controlador.listar_mensajes(1,'')      
+
+    return jsonify(resultado)
+
 @app.route('/consultamensajes')
 def consulta_mensajes():
     usu='alexillo@gmail.com'
@@ -140,6 +189,14 @@ def validar():
 def mensajeria():
     return render_template('mensajeria.html')
 
+
+@app.route('/recuperar')
+def recuperar():
+    return render_template('recuperar.html')
+
+@app.route('/restablecer')
+def restablecer():
+    return render_template('restablecer.html')
 
 @app.route('/menu')
 def menu():
