@@ -14,6 +14,7 @@ app.secret_key='Mi clave Secreta'+str(datetime.now)
 def prueba():
     return True
 
+
 @app.route('/cambiarclave',methods=['POST'])
 def restablece_cuenta():
     datos=request.form
@@ -175,6 +176,7 @@ def index():
 
 @app.route('/login')
 def login():
+    session.clear()
     return render_template('login.html')
 
 @app.route('/registro')
@@ -194,9 +196,14 @@ def mensajeria():
 def recuperar():
     return render_template('recuperar.html')
 
+@app.route('/restablecer/<usuario>')
 @app.route('/restablecer')
-def restablecer():
-    return render_template('restablecer.html')
+def restablecer(usuario=None):
+    if usuario:
+       return render_template('restablecer.html', userdata=usuario)
+    else:
+       return render_template('restablecer.html')  
+
 
 @app.route('/menu')
 def menu():
@@ -227,7 +234,12 @@ def menu_deseos():
 def menu_gestion():
     return render_template('gestionproducto.html')
 
-
+@app.before_request
+def protegerrutas():
+    ruta=request.path
+    if not 'username' in session and (ruta=="/menu" or ruta=="/mensajeria"):
+        flash('Por Favor debe Loguearse en el sistema')
+        return redirect('/login')
 
 if  __name__=='__main__':
      app.run(debug=True)  

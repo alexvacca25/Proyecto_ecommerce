@@ -142,6 +142,7 @@ def recupera_cuenta(usu):
         resultado=cursor.fetchone()
 
         if resultado!=None:
+            enviaremail.recuperar_email(usu)
             return 'SI'
         else:
             return 'NO'
