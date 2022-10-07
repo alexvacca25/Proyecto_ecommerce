@@ -23,7 +23,7 @@ def adicionar_registros(nombre,apellido,usuario,p1):
         db=conexion()
         cursor=db.cursor()
         sql='INSERT INTO usuario(nombre,apellido,usuario,passwd,cod_verificacion,verificado,id_rol) VALUES(?,?,?,?,?,?,?)'
-        cursor.execute(sql,[nombre,apellido,usuario,p1,cod_ver,1,1])
+        cursor.execute(sql,[nombre,apellido,usuario,p1,cod_ver,0,1])
         db.commit()
         enviaremail.enviar_email(usuario,cod_ver)
         return True
